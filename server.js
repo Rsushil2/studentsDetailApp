@@ -7,7 +7,6 @@ const { GetAllStudentsList,studentById,studentByName,createDoc,deleteDoc,updateD
 const path = require('path');
 const PORT = process.env.PORT
 
-app.use(express.static(path.join(__dirname, './client/build')))
 const app = express();
 app.use(express.json());
 app.use(cors());

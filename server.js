@@ -5,6 +5,7 @@ const { ObjectId } = require('mongodb');
 const dotenv = require('dotenv')
 const { GetAllStudentsList,studentById,studentByName,createDoc,deleteDoc,updateDoc } = require('./services/studentService');
 const path = require('path');
+const PORT = process.env.PORT
 
 app.use(express.static(path.join(__dirname, './client/build')))
 const app = express();
@@ -73,8 +74,8 @@ app.use("*", function(req, res){
 let db;
 connectToDb((err)=>{
     if(!err){
-    app.listen(process.env.PORT, () => {
-        console.log(`app listening on port ${process.env.PORT}...`)});
+    app.listen(PORT, () => {
+        console.log(`app listening on port ${PORT}...`)});
     }
     db = getDb();    
 })

@@ -5,14 +5,16 @@ const { ObjectId } = require('mongodb');
 const dotenv = require('dotenv')
 const { GetAllStudentsList,studentById,studentByName,createDoc,deleteDoc,updateDoc } = require('./services/studentService');
 const path = require('path');
-const PORT = process.env.PORT
+const {fileURLToPath}= require('url');
+
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(express.static('./client/build')
+app.use(express.static('./client/build'))
 
 dotenv.config();
+
 
 
 // routes
@@ -74,9 +76,10 @@ app.use("*", function(req, res){
 let db;
 connectToDb((err)=>{
     if(!err){
-    app.listen(PORT, () => {
-        console.log(`app listening on port ${PORT}...`)});
+    app.listen(process.env.PORT, () => {
+        console.log(`app listening on port ${process.env.PORT}...`)});
     }
     db = getDb();    
 })
+
 

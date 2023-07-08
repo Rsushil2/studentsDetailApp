@@ -73,7 +73,7 @@ module.exports.studentById = function (id, db) {
 // get student by name
 module.exports.studentByName = function (firstName, db) {
     return db.collection('Students')
-        .find({ first_name: firstName })
+        .find({ first_name: { $regex: firstName, $options: "i" } })
         .toArray()
         .then((doc) => {
             return doc;

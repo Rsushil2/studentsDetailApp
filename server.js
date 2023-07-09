@@ -3,7 +3,7 @@ const cors = require('cors');
 const { connectToDb, getDb } = require('./db');
 const { ObjectId } = require('mongodb');
 const dotenv = require('dotenv')
-const { GetAllStudentsList,studentById,studentByName,createDoc,deleteDoc,updateDoc } = require('./services/studentService');
+const { GetAllStudentsList,studentById,studentByName,createDoc,deleteDoc,updateDoc,filterId } = require('./services/studentService');
 const path = require('path');
 const {fileURLToPath}= require('url');
 
@@ -64,6 +64,13 @@ app.delete('/students/:id', async (req, res) => {
 app.put('/students/:id',async (req, res) => {
     let result = await updateDoc( new ObjectId(req.params.id),req.body, db);
     res.status(200).json(result);
+})
+
+// Endpoint for checking if the ID exists
+app.get('/filterId', async (req, res) => {
+    let result = await filterId(db);
+    res.status(200).json(result); 
+
 })
 
 

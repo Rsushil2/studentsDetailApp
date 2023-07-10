@@ -119,18 +119,31 @@ module.exports.studentByName = function (firstName, db) {
 
 module.exports.createDoc = function (doc, db) {
   if (!doc.first_name) {
-    console.error("first name is required...");
-    return error;
+      return {
+        success: false,
+        message: "First Name Must be filled!",
+      };
   }
 
   if (!doc.last_name) {
-    console.error("last name is required...");
-    return error;
+      return {
+        success: false,
+        message: "Last Name Must be filled!",
+      };
   }
 
   if (!doc.email) {
-    console.error("email is required...");
-    return error;
+    return {
+        success: false,
+        message: "Email Must be filled!",
+      };
+  }
+
+  if (!doc.id) {
+    return {
+        success: false,
+        message: "Id Must be choosed!",
+      };
   }
 
   const student = {

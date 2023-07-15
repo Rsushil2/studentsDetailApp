@@ -52,6 +52,59 @@ module.exports.GetAllStudentsList = function (page, limit, db) {
         });
     });
 };
+
+//sort by name
+module.exports.GetSortByNameStudentsList = function (page, limit, db) {
+  const startIndex = (page - 1) * limit;
+  const endIndex = limit;
+  const endPage = page * limit;
+
+  let results = {};
+  let students = [];
+  let totalCount;
+
+  const query = { id: { $gt: 0 } };
+  const options = {
+    // sort returned documents in ascending order by first name
+    sort: { first_name:1 },
+    // Include only the `id`,`first_name`,`last_name` and `email` fields in each returned document
+    projection: { _id: 1, id: 1, first_name: 1, last_name: 1, email: 1 },
+  };
+
+  return db
+    .collection("Students")
+    .countDocuments()
+    .then((count) => {
+      totalCount = count;
+      return db
+        .collection("Students")
+        .find(query, options) // cursor toArray forEach
+        .skip(startIndex)
+        .limit(endIndex)
+        .forEach((student) => students.push(student))
+        .then((_) => {
+          results.students = students;
+          results.error = null;
+          if (startIndex > 0) {
+            results.previousPage = page - 1;
+          }
+
+          if (endPage < totalCount) {
+            results.nextPage = page + 1;
+          }
+
+          results.totalPage = Math.ceil(totalCount / endIndex);
+          results.totalStudents = totalCount;
+          return results;
+        })
+        .catch((err) => {
+          console.error(err);
+          results.error = err;
+          return results;
+        });
+    });
+};
+
 //available ids
 module.exports.filterId = function (db) {
     let results = {};

@@ -3,7 +3,7 @@ const cors = require('cors');
 const { connectToDb, getDb } = require('./db');
 const { ObjectId } = require('mongodb');
 const dotenv = require('dotenv')
-const { GetAllStudentsList,studentById,studentByName,createDoc,deleteDoc,updateDoc,filterId } = require('./services/studentService');
+const { GetAllStudentsList, GetSortByNameStudentsList,studentById,studentByName,createDoc,deleteDoc,updateDoc,filterId } = require('./services/studentService');
 const path = require('path');
 const {fileURLToPath}= require('url');
 
@@ -25,6 +25,17 @@ app.get('/', (req, res) => {
 // Pagination get
 app.get('/students', async (req, res) => {
      let result  = await GetAllStudentsList(parseInt(req.query.page)||1 ,parseInt(req.query.limit)||10,db);
+     let status = 200;
+     if(result.error)
+     {
+        status=404;
+     }
+     res.status(status).json(result);
+})
+
+// Pagination get
+app.get('/studentsSort', async (req, res) => {
+     let result  = await GetSortByNameStudentsList(parseInt(req.query.page)||1 ,parseInt(req.query.limit)||10,db);
      let status = 200;
      if(result.error)
      {
